@@ -28,13 +28,15 @@
 }
 
 .sent {
-  background: #dcf8c6;
+  background: #b1fcb1;
   align-self: flex-end;
+  text-align: right;
 }
 
 .received {
-  background: #fff;
+  background: #8db6ed;
   align-self: flex-start;
+  text-align: left;
 }
 
 .input-container {

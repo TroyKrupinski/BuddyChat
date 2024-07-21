@@ -3,7 +3,7 @@ import Peer from 'simple-peer';
 import io from 'socket.io-client';
 import './BuddyVideoCall.css';
 
-const socket = io.connect('http://localhost:5000'); // Change to your server address
+const socket = io.connect('http://localhost:5000'); // Change to server address when implemented.
 
 const BuddyVideoCall = () => {
   const [stream, setStream] = useState(null);
