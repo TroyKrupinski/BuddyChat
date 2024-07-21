@@ -1,0 +1,44 @@
+/* HomePage Styles */
+.home-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #6B73FF 0%, #000DFF 100%); /* Gradient background */
+    color: white;
+    text-align: center;
+  }
+  
+  .content {
+    max-width: 600px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .content h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+  }
+  
+  .content p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+  }
+  
+  .content button {
+    padding: 10px 20px;
+    font-size: 1.2em;
+    color: #fff;
+    background-color: #4CAF50; /* Button color */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .content button:hover {
+    background-color: #45a049; /* Button hover color */
+  }
+  

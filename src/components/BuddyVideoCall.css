@@ -1,0 +1,41 @@
+/* BuddyVideoCall Styles */
+.buddy-video-call {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: #f0f0f0;
+  padding: 20px;
+}
+
+.buddy-video-call h2 {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+}
+
+.video-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+  gap: 20px;
+}
+
+.video {
+  width: 45%;
+  max-width: 600px;
+  height: auto;
+  background-color: #000;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.user-video {
+  order: 1;
+}
+
+.partner-video {
+  order: 2;
+}

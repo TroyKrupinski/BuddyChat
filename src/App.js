@@ -1,24 +1,27 @@
-import logo from './logo.svg';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import HomePage from './components/HomePage';
+import WebcamConfig from './components/WebcamConfig';
+import WaitingRoom from './components/WaitingRoom';
+import BuddyChat from './components/BuddyChat';
+import BuddyVideoCall from './components/BuddyVideoCall';
+import Navigation from './components/Navigation';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Navigation />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/webcam-config" element={<WebcamConfig />} />
+          <Route path="/waiting-room" element={<WaitingRoom />} />
+          <Route path="/buddy-chat" element={<BuddyChat />} />
+          <Route path="/buddy-video-call" element={<BuddyVideoCall />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
