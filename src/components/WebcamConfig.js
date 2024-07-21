@@ -1,11 +1,17 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import './WebcamConfig.css';
+import { io } from 'socket.io-client';
+
+const socket = io('http://localhost:5000');
 
 const WebcamConfig = () => {
   const [videoDevices, setVideoDevices] = useState([]);
   const [audioDevices, setAudioDevices] = useState([]);
   const [selectedVideoDevice, setSelectedVideoDevice] = useState('');
   const [selectedAudioDevice, setSelectedAudioDevice] = useState('');
+  const [capturedImage, setCapturedImage] = useState('');
+  const [prediction, setPrediction] = useState(null); // State to hold the prediction result
   const videoRef = useRef(null);
   const audioMeterRef = useRef(null);
   const audioContextRef = useRef(null);
@@ -53,6 +59,18 @@ const WebcamConfig = () => {
     }
   }, [selectedAudioDevice]);
 
+  useEffect(() => {
+    // Listen for the prediction event from the server
+    socket.on('prediction', (data) => {
+      setPrediction(data); // Update the prediction state with the received data
+    });
+
+    // Cleanup on unmount
+    return () => {
+      socket.off('prediction');
+    };
+  }, []);
+
   const createAudioMeter = (audioContext) => {
     const processor = audioContext.createScriptProcessor(512);
     processor.onaudioprocess = (event) => {
@@ -64,6 +82,19 @@ const WebcamConfig = () => {
     };
     processor.connect(audioContext.destination);
     return processor;
+  };
+
+  const captureImage = () => {
+    if (videoRef.current) {
+      const canvas = document.createElement('canvas');
+      canvas.width = videoRef.current.videoWidth;
+      canvas.height = videoRef.current.videoHeight;
+      const context = canvas.getContext('2d');
+      context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+      const imageData = canvas.toDataURL('image/png');
+      setCapturedImage(imageData);
+      socket.emit('image', { image: imageData }); // Send image to the server
+    }
   };
 
   return (
@@ -94,9 +125,23 @@ const WebcamConfig = () => {
           <progress id="audio-meter" ref={audioMeterRef} max="1" className="audio-meter"></progress>
         </div>
       </div>
+      <button onClick={captureImage}>Capture Image</button>
+      {capturedImage && (
+        <div className="captured-image-preview">
+          <h3>Captured Image:</h3>
+          <img src={capturedImage} alt="Captured" />
+        </div>
+      )}
+      {prediction && (
+        <div className="prediction-result">
+          <h3>Prediction Result:</h3>
+          <p>{JSON.stringify(prediction)}</p>
+        </div>
+      )}
       <button onClick={() => window.location.href = '/waiting-room'}>Next</button>
     </div>
   );
 }
 
 export default WebcamConfig;
+
