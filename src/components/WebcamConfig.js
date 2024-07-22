@@ -1,9 +1,10 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import './WebcamConfig.css';
 import { io } from 'socket.io-client';
 
-const socket = io('http://localhost:5000');
+const socket = io('http://localhost:5000', {
+  transports: ['websocket', 'polling'],
+});
 
 const WebcamConfig = () => {
   const [videoDevices, setVideoDevices] = useState([]);
@@ -20,6 +21,7 @@ const WebcamConfig = () => {
   useEffect(() => {
     async function getDevices() {
       const devices = await navigator.mediaDevices.enumerateDevices();
+      console.log('Devices:', devices);
       const videoInputDevices = devices.filter(device => device.kind === 'videoinput');
       const audioInputDevices = devices.filter(device => device.kind === 'audioinput');
       setVideoDevices(videoInputDevices);
@@ -32,6 +34,7 @@ const WebcamConfig = () => {
 
   useEffect(() => {
     if (selectedVideoDevice) {
+      console.log('Selected Video Device:', selectedVideoDevice);
       navigator.mediaDevices.getUserMedia({ video: { deviceId: selectedVideoDevice } })
         .then(stream => {
           if (videoRef.current) {
@@ -44,6 +47,7 @@ const WebcamConfig = () => {
 
   useEffect(() => {
     if (selectedAudioDevice) {
+      console.log('Selected Audio Device:', selectedAudioDevice);
       navigator.mediaDevices.getUserMedia({ audio: { deviceId: selectedAudioDevice } })
         .then(stream => {
           if (!audioContextRef.current) {
@@ -62,6 +66,7 @@ const WebcamConfig = () => {
   useEffect(() => {
     // Listen for the prediction event from the server
     socket.on('prediction', (data) => {
+      console.log('Received Prediction:', data);
       setPrediction(data); // Update the prediction state with the received data
     });
 
@@ -92,6 +97,7 @@ const WebcamConfig = () => {
       const context = canvas.getContext('2d');
       context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
       const imageData = canvas.toDataURL('image/png');
+      console.log('Captured Image Data:', imageData);
       setCapturedImage(imageData);
       socket.emit('image', { image: imageData }); // Send image to the server
     }
