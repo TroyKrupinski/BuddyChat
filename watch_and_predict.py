@@ -100,8 +100,8 @@ transform = transforms.Compose([
 ])
 
 # Define the directory to watch and the directory to save predictions
-watch_directory = './image'
-save_directory = './prediction'
+watch_directory = './images'
+save_directory = './predictions'
 
 if not os.path.exists(save_directory):
     os.makedirs(save_directory)
@@ -126,11 +126,12 @@ class ImageHandler(FileSystemEventHandler):
                 outputs = model(image)
                 _, predicted = torch.max(outputs, 1)
                 predicted_label = predicted.item()
+                emotion = id2label[predicted_label]
 
             # Save the prediction
             prediction_path = os.path.join(save_directory, f'{image_name}.txt')
             with open(prediction_path, 'w') as f:
-                f.write(str(predicted_label))
+                f.write(str(emotion))
             print(f'Saved prediction: {predicted_label} to {prediction_path}')
 
 # Set up the observer
