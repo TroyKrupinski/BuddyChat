@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+*Documentation has been lost, replacement documentation will replace this soon. For now, here is the standard NPM documentation*
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
